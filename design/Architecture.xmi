@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.1" name="SystemModel">
+  <packagedElement xmi:type="uml:Package" xmi:id="pkg_b040b4179b8b0070" name="Architecture">
+    <packagedElement xmi:type="uml:Component" xmi:id="comp_b291beb8793f4f33" name="Application"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="comp_123a7f2fcc9ae7cb" name="Platform"/>
+  </packagedElement>
+</uml:Model>
