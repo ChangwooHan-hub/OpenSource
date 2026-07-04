@@ -1,0 +1,36 @@
+#!/bin/sh
+set -eu
+
+if [ "${DISABLE_DESIGN_HOOK:-}" = "1" ]; then
+  exit 0
+fi
+
+repo_root="$(git rev-parse --show-toplevel)"
+process_root="$repo_root/process"
+
+if [ ! -d "$process_root" ]; then
+  echo "Design process project not found: $process_root" >&2
+  exit 1
+fi
+
+changed_files_file="$(mktemp)"
+trap 'rm -f "$changed_files_file"' EXIT
+
+git diff-tree --no-commit-id --name-only -r HEAD -- Seat |
+  awk 'BEGIN { IGNORECASE=1 } /\.(c|cc|cpp|cxx|h|hh|hpp|hxx)$/ { print }' > "$changed_files_file"
+
+if [ ! -s "$changed_files_file" ]; then
+  exit 0
+fi
+
+mkdir -p "$process_root/design/reports"
+
+absolute_files=""
+while IFS= read -r changed_file; do
+  absolute_files="$absolute_files \"$repo_root/$changed_file\""
+done < "$changed_files_file"
+
+eval "python \"$process_root/agents/pipeline.py\" --root \"$process_root\" $absolute_files" >> "$process_root/design/reports/seat-post-commit.log" 2>&1 || {
+  echo "Seat design synchronization failed. See process/design/reports/seat-post-commit.log" >&2
+  exit 1
+}

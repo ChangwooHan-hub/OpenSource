@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+    <meta charset='UTF-8'>
+    <title>프로세스 추적성 대시보드</title>
+    <script src='https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js'></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f4f7f6; }
+        h1 { color: #333; text-align: center; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; overflow-x: auto; }
+        .mermaid { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { padding: 12px; border: 1px solid #eee; text-align: left; }
+        th { background-color: #fafafa; color: #555; }
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .badge-high { background-color: #fbebeb; color: #d9534f; }
+        .badge-review { background-color: #e8f4f8; color: #0275d8; }
+    </style>
+</head>
+<body>
+    <h1>📊 프로젝트 단위설계 & 산출물 추적성 대시보드</h1>
+    <div class='card'>
+        <h2>🔗 요구사항-설계-산출물 추적 맵 (Traceability Map)</h2>
+        <div class='mermaid'>graph LR\n  subgraph Requirements\n    R0["VF-R-001 High VBAT Fail Detection"]\n    R1["VF-R-002 High IGN1 Fail Detection"]\n    R2["VF-R-003 Low VBAT Fail Detection"]\n    R3["VF-R-004 Low IGN1 Fail Detection"]\n    R4["VF-R-005 High VBAT Fail Return"]\n    R5["VF-R-006 High IGN1 Fail Return"]\n    R6["VF-R-007 Low VBAT Fail Return"]\n    R7["VF-R-008 Low IGN1 Fail Return"]\n    R8["VF-R-009 Integrated Voltage Fail Output"]\n  end\n  subgraph UnitDesign\n    C0["Class: VoltageFail"]\n    R0 --> C0\n    R1 --> C0\n    R2 --> C0\n    R3 --> C0\n    R4 --> C0\n    R5 --> C0\n    R6 --> C0\n    R7 --> C0\n    R8 --> C0\n  end\n  subgraph Artifacts\n    A0["Artifact: ReviewReport_20260521_123153.md"]\n    C0 -.->|Documented by| A0\n    A1["Artifact: ReviewReport_20260521_135547.md"]\n    C0 -.->|Documented by| A1\n    A2["Artifact: SDRReport_20260521_140438.md"]\n    C0 -.->|Documented by| A2\n    A3["Artifact: UnitDesign.xmi"]\n    C0 -.->|Documented by| A3\n    A4["Artifact: ReviewReport_20260521_140438.md"]\n    C0 -.->|Documented by| A4\n    A5["Artifact: ReviewReport_20260703_103345.md"]\n    C0 -.->|Documented by| A5\n    A6["Artifact: ReviewReport_20260703_111413.md"]\n    C0 -.->|Documented by| A6\n    A7["Artifact: ReviewReport_20260703_112033.md"]\n    C0 -.->|Documented by| A7\n    A8["Artifact: ReviewReport_20260704_064528.md"]\n    C0 -.->|Documented by| A8\n  end</div>
+    </div>
+    <div class='card'>
+        <h2>📄 자동 생성 산출물 (Artifacts)</h2>
+        <table>
+            <tr><th>Artifact ID</th><th>유형</th><th>제목</th><th>상태</th><th>생성일시</th></tr>
+            <tr><td>ART-SAR-001</td><td>Architecture Review Report</td><td>ReviewReport_20260521_123153.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-05-21 12:31:53</td></tr>
+            <tr><td>ART-SAR-002</td><td>Architecture Review Report</td><td>ReviewReport_20260521_135547.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-05-21 13:55:47</td></tr>
+            <tr><td>ART-SDR-001</td><td>Unit Design Report</td><td>SDRReport_20260521_140438.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-05-21 14:04:38</td></tr>
+            <tr><td>ART-XMI-001</td><td>Detailed Design Specification</td><td>UnitDesign.xmi</td><td><span class='badge badge-review'>In Review</span></td><td>2026-05-21 14:04:38</td></tr>
+            <tr><td>ART-SAR-003</td><td>Architecture Review Report</td><td>ReviewReport_20260521_140438.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-05-21 14:04:38</td></tr>
+            <tr><td>ART-SAR-004</td><td>Architecture Review Report</td><td>ReviewReport_20260703_103345.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-07-03 10:33:45</td></tr>
+            <tr><td>ART-SAR-005</td><td>Architecture Review Report</td><td>ReviewReport_20260703_111413.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-07-03 11:14:13</td></tr>
+            <tr><td>ART-SAR-006</td><td>Architecture Review Report</td><td>ReviewReport_20260703_112033.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-07-03 11:20:33</td></tr>
+            <tr><td>ART-SAR-007</td><td>Architecture Review Report</td><td>ReviewReport_20260704_064528.md</td><td><span class='badge badge-review'>In Review</span></td><td>2026-07-04 06:45:28</td></tr>
+        </table>
+    </div>
+    <div class='card'>
+        <h2>⚠️ 아키텍처/검증 이슈 (Issues)</h2>
+        <table>
+            <tr><th>Issue ID</th><th>심각도</th><th>카테고리</th><th>설명</th><th>상태</th></tr>
+        </table>
+    </div>
+    <script>
+        mermaid.initialize({startOnLoad:true, theme: 'default'});
+    </script>
+</body>
+</html>

@@ -14,11 +14,11 @@ from agents.ast_parser import is_source_file
 from agents.config import load_config
 from agents.sar_agent import run_sar
 from agents.sdr_agent import run_sdr
-
+from agents.process_integrator import integrate_pipeline_results
 
 def changed_files(root: Path, mode: str, explicit_files: list[str]) -> list[str]:
     if explicit_files:
-        return [str((root / file).resolve()) if not Path(file).is_absolute() else file for file in explicit_files]
+        return [str(_resolve_explicit_path(root, file)) for file in explicit_files]
 
     if mode == "last-commit":
         command = ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"]
@@ -59,6 +59,19 @@ def _resolve_changed_path(root: Path, git_root: Path, value: str) -> Path:
     return root / value
 
 
+def _resolve_explicit_path(root: Path, value: str) -> Path:
+    candidate = Path(value)
+    if candidate.is_absolute():
+        return candidate
+    root_candidate = root / candidate
+    if root_candidate.exists():
+        return root_candidate.resolve()
+    cwd_candidate = Path.cwd() / candidate
+    if cwd_candidate.exists():
+        return cwd_candidate.resolve()
+    return root_candidate.resolve()
+
+
 def run_pipeline(root: Path, mode: str, files: list[str], config_path: str = "agents/config.yaml") -> dict:
     config = load_config(root / config_path)
     extensions = set(config.get("parser", {}).get("source_extensions", []))
@@ -69,11 +82,15 @@ def run_pipeline(root: Path, mode: str, files: list[str], config_path: str = "ag
 
     if not selected:
         sar_result = run_sar(root, config_path)
-        return {"changed_files": [], "sdr": None, "sar": sar_result}
+        result = {"changed_files": [], "sdr": None, "sar": sar_result}
+        integrate_pipeline_results(root, result)
+        return result
 
     sdr_result = run_sdr(selected, root, config_path)
     sar_result = run_sar(root, config_path)
-    return {"changed_files": selected, "sdr": sdr_result, "sar": sar_result}
+    result = {"changed_files": selected, "sdr": sdr_result, "sar": sar_result}
+    integrate_pipeline_results(root, result)
+    return result
 
 
 def main() -> int:

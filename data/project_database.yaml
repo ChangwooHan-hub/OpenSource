@@ -1,0 +1,82 @@
+projects:
+- project_id: PRJ-EPB-001
+  name: Electric Parking Brake Control ECU
+  target_aspice_level: CL2
+  safety_applicable: true
+  cybersecurity_applicable: true
+  current_gate_id: GATE-G5
+artifacts:
+- artifact_id: ART-SAR-001
+  project_id: PRJ-EPB-001
+  artifact_type: Architecture Review Report
+  title: ReviewReport_20260521_123153.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\ReviewReport_20260521_123153.md
+  created_at: '2026-05-21 12:31:53'
+- artifact_id: ART-SAR-002
+  project_id: PRJ-EPB-001
+  artifact_type: Architecture Review Report
+  title: ReviewReport_20260521_135547.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\ReviewReport_20260521_135547.md
+  created_at: '2026-05-21 13:55:47'
+- artifact_id: ART-SDR-001
+  project_id: PRJ-EPB-001
+  artifact_type: Unit Design Report
+  title: SDRReport_20260521_140438.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\SDRReport_20260521_140438.md
+  created_at: '2026-05-21 14:04:38'
+- artifact_id: ART-XMI-001
+  project_id: PRJ-EPB-001
+  artifact_type: Detailed Design Specification
+  title: UnitDesign.xmi
+  version: '1.0'
+  status: In Review
+  storage_uri: design\UnitDesign.xmi
+  created_at: '2026-05-21 14:04:38'
+- artifact_id: ART-SAR-003
+  project_id: PRJ-EPB-001
+  artifact_type: Architecture Review Report
+  title: ReviewReport_20260521_140438.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\ReviewReport_20260521_140438.md
+  created_at: '2026-05-21 14:04:38'
+- artifact_id: ART-SAR-004
+  project_id: PRJ-EPB-001
+  artifact_type: Architecture Review Report
+  title: ReviewReport_20260703_103345.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\ReviewReport_20260703_103345.md
+  created_at: '2026-07-03 10:33:45'
+- artifact_id: ART-SAR-005
+  project_id: PRJ-EPB-001
+  artifact_type: Architecture Review Report
+  title: ReviewReport_20260703_111413.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\ReviewReport_20260703_111413.md
+  created_at: '2026-07-03 11:14:13'
+- artifact_id: ART-SAR-006
+  project_id: PRJ-EPB-001
+  artifact_type: Architecture Review Report
+  title: ReviewReport_20260703_112033.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\ReviewReport_20260703_112033.md
+  created_at: '2026-07-03 11:20:33'
+- artifact_id: ART-SAR-007
+  project_id: PRJ-EPB-001
+  artifact_type: Architecture Review Report
+  title: ReviewReport_20260704_064528.md
+  version: '1.0'
+  status: In Review
+  storage_uri: design\reports\ReviewReport_20260704_064528.md
+  created_at: '2026-07-04 06:45:28'
+issues: []
+trace_links: []

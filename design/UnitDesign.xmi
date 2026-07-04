@@ -1,87 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.1" name="SystemModel">
-  <packagedElement xmi:type="uml:Package" xmi:id="pkg_f4cd7e42a8dfe4fb" name="UnitDesign">
-    <!--Updated by SDR_Agent 2026-04-29T12:51:50-->
-    <!--Source commit 14640630ac728c5c89fd1d5b23c474fab3c35fe4-->
-    <packagedElement xmi:type="uml:Operation" xmi:id="fn_977fd89ae2525f24" name="VoltageFail_AddSaturated">
-      <!--source: C:\Users\User\git\Seat\src\voltage_fail.c-->
-      <ownedParameter xmi:id="fnret_977fd89ae2525f24" name="return" direction="return" type="static uint32_t"/>
-      <ownedParameter xmi:id="fnparam_3dbcaf48f9a02fc1" name="value" direction="in" type="uint32_t"/>
-      <ownedParameter xmi:id="fnparam_d17d385186eb9af8" name="increment" direction="in" type="uint32_t"/>
+<xmi:XMI xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmi:version="2.1">
+  <uml:Model xmi:id="model_voltage_fail" name="VoltageFail_SW_Design">
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_voltage_fail" name="VoltageFail">
+      <ownedComment xmi:id="comment_pkg_voltage_fail">
+        <body>Voltage Fail SW design generated from src/voltage_fail.c and inc/voltage_fail.h.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="enum_output_signal" name="VoltageFail_OutputSignalType">
+        <ownedLiteral xmi:id="enum_lit_off" name="VOLTAGE_FAIL_OUTPUT_OFF"/>
+        <ownedLiteral xmi:id="enum_lit_low" name="VOLTAGE_FAIL_OUTPUT_LOW_VOLTAGE"/>
+        <ownedLiteral xmi:id="enum_lit_over" name="VOLTAGE_FAIL_OUTPUT_OVER_VOLTAGE"/>
+        <ownedLiteral xmi:id="enum_lit_invalid" name="VOLTAGE_FAIL_OUTPUT_INVALID_CONFIG"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_params" name="VoltageFail_ParamsType">
+        <ownedAttribute xmi:id="attr_param_high_det" name="Par_HighVoltageDetection"/>
+        <ownedAttribute xmi:id="attr_param_high_filter" name="Par_HighVoltageFailFiltering"/>
+        <ownedAttribute xmi:id="attr_param_low_det" name="Par_LowVoltageDetection"/>
+        <ownedAttribute xmi:id="attr_param_low_filter" name="Par_LowVoltageFailFiltering"/>
+        <ownedAttribute xmi:id="attr_param_high_return" name="Par_HighVoltageReturn"/>
+        <ownedAttribute xmi:id="attr_param_low_return" name="Par_LowVoltageReturn"/>
+        <ownedAttribute xmi:id="attr_param_exhibition_low_return" name="Par_ExhibitionLowVoltageReturn"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_input" name="VoltageFail_InputType">
+        <ownedAttribute xmi:id="attr_input_vbat" name="Input_H_VBAT"/>
+        <ownedAttribute xmi:id="attr_input_ign1" name="Input_H_IGN1"/>
+        <ownedAttribute xmi:id="attr_input_factory" name="Input_C_FactoryMode"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_state" name="VoltageFail_StateType">
+        <ownedAttribute xmi:id="attr_state_high_vbat" name="m_VoltageHighFail"/>
+        <ownedAttribute xmi:id="attr_state_high_ign1" name="m_VoltageHighFail_IGN1"/>
+        <ownedAttribute xmi:id="attr_state_low_vbat" name="m_VoltageLowFail"/>
+        <ownedAttribute xmi:id="attr_state_low_ign1" name="m_VoltageLowFail_IGN1"/>
+        <ownedAttribute xmi:id="attr_state_high_vbat_time" name="highVbatFilterTimeMs"/>
+        <ownedAttribute xmi:id="attr_state_high_ign1_time" name="highIgn1FilterTimeMs"/>
+        <ownedAttribute xmi:id="attr_state_low_vbat_time" name="lowVbatFilterTimeMs"/>
+        <ownedAttribute xmi:id="attr_state_low_ign1_time" name="lowIgn1FilterTimeMs"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_output" name="VoltageFail_OutputType">
+        <ownedAttribute xmi:id="attr_output_high_vbat" name="m_VoltageHighFail"/>
+        <ownedAttribute xmi:id="attr_output_high_ign1" name="m_VoltageHighFail_IGN1"/>
+        <ownedAttribute xmi:id="attr_output_low_vbat" name="m_VoltageLowFail"/>
+        <ownedAttribute xmi:id="attr_output_low_ign1" name="m_VoltageLowFail_IGN1"/>
+        <ownedAttribute xmi:id="attr_output_voltage_fail" name="Output_INT_VoltageFail"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="cmp_voltage_fail" name="VoltageFail Component">
+        <ownedComment xmi:id="comment_cmp_voltage_fail">
+          <body>Embedded C component that detects VBAT/IGN1 high voltage and low voltage failure states with filtering and hysteresis return thresholds.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="class_voltage_fail" name="VoltageFail">
+        <ownedOperation xmi:id="op_init" name="VoltageFail_Init">
+          <ownedComment xmi:id="comment_op_init">
+            <body>Initializes fail latch states and filter timers to Off/0.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="param_init_state" name="state" direction="inout"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_update" name="VoltageFail_Update">
+          <ownedComment xmi:id="comment_op_update">
+            <body>Updates high/low voltage fail latches and Output_INT_VoltageFail from input, parameters, and elapsed time.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="param_update_state" name="state" direction="inout"/>
+          <ownedParameter xmi:id="param_update_params" name="params" direction="in"/>
+          <ownedParameter xmi:id="param_update_input" name="input" direction="in"/>
+          <ownedParameter xmi:id="param_update_elapsed" name="elapsedMs" direction="in"/>
+          <ownedParameter xmi:id="param_update_output" name="output" direction="out"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_add_saturated" name="VoltageFail_AddSaturated" visibility="private">
+          <ownedComment xmi:id="comment_op_add_saturated">
+            <body>Performs uint32 saturated addition for filter timer accumulation.</body>
+          </ownedComment>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_update_filter" name="VoltageFail_UpdateFilter" visibility="private">
+          <ownedComment xmi:id="comment_op_update_filter">
+            <body>Accumulates hold time while condition is true and latches fail flag when filter time is reached.</body>
+          </ownedComment>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_get_output" name="VoltageFail_GetOutput" visibility="private">
+          <ownedComment xmi:id="comment_op_get_output">
+            <body>Maps high/low fail latch combination to Output_INT_VoltageFail.</body>
+          </ownedComment>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_requirements" name="Requirements">
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_001" name="VF-R-001 High VBAT Fail Detection">
+          <ownedComment xmi:id="comment_req_vf_001">
+            <body>If Input_H_VBAT &gt;= Par_HighVoltageDetection is maintained for Par_HighVoltageFailFiltering or longer, m_VoltageHighFail shall be stored as On.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_002" name="VF-R-002 High IGN1 Fail Detection">
+          <ownedComment xmi:id="comment_req_vf_002">
+            <body>If Input_H_IGN1 &gt;= Par_HighVoltageDetection is maintained for Par_HighVoltageFailFiltering or longer, m_VoltageHighFail_IGN1 shall be stored as On.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_003" name="VF-R-003 Low VBAT Fail Detection">
+          <ownedComment xmi:id="comment_req_vf_003">
+            <body>If Input_H_VBAT &lt;= Par_LowVoltageDetection is maintained for Par_LowVoltageFailFiltering or longer, m_VoltageLowFail shall be stored as On.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_004" name="VF-R-004 Low IGN1 Fail Detection">
+          <ownedComment xmi:id="comment_req_vf_004">
+            <body>If Input_H_IGN1 &lt;= Par_LowVoltageDetection is maintained for Par_LowVoltageFailFiltering or longer, m_VoltageLowFail_IGN1 shall be stored as On.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_005" name="VF-R-005 High VBAT Fail Return">
+          <ownedComment xmi:id="comment_req_vf_005">
+            <body>If m_VoltageHighFail is On and Input_H_VBAT &lt;= Par_HighVoltageReturn, m_VoltageHighFail shall be stored as Off.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_006" name="VF-R-006 High IGN1 Fail Return">
+          <ownedComment xmi:id="comment_req_vf_006">
+            <body>If m_VoltageHighFail_IGN1 is On and Input_H_IGN1 &lt;= Par_HighVoltageReturn, m_VoltageHighFail_IGN1 shall be stored as Off.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_007" name="VF-R-007 Low VBAT Fail Return">
+          <ownedComment xmi:id="comment_req_vf_007">
+            <body>If m_VoltageLowFail is On, return threshold is Par_LowVoltageReturn in Custom Mode and Par_ExhibitionLowVoltageReturn otherwise. If Input_H_VBAT &gt;= selected threshold, m_VoltageLowFail shall be stored as Off.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_008" name="VF-R-008 Low IGN1 Fail Return">
+          <ownedComment xmi:id="comment_req_vf_008">
+            <body>If m_VoltageLowFail_IGN1 is On, return threshold is Par_LowVoltageReturn in Custom Mode and Par_ExhibitionLowVoltageReturn otherwise. If Input_H_IGN1 &gt;= selected threshold, m_VoltageLowFail_IGN1 shall be stored as Off.</body>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="req_vf_009" name="VF-R-009 Integrated Voltage Fail Output">
+          <ownedComment xmi:id="comment_req_vf_009">
+            <body>Output_INT_VoltageFail shall be Off, LowVoltage, OverVoltage, or InvalidConfig according to m_VoltageHighFail, m_VoltageHighFail_IGN1, m_VoltageLowFail, and m_VoltageLowFail_IGN1.</body>
+          </ownedComment>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Activity" xmi:id="act_voltage_fail_update" name="VoltageFail_Update Activity">
+        <ownedComment xmi:id="comment_act_voltage_fail_update">
+          <body>Flow: validate pointers, update high/low filters, apply high return hysteresis, select low return threshold by Factory Mode, apply low return hysteresis, copy latch states to output, calculate Output_INT_VoltageFail.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:StateMachine" xmi:id="sm_fail_latch" name="Voltage Fail Latch State Machine">
+        <ownedComment xmi:id="comment_sm_fail_latch">
+          <body>Each individual fail latch has two logical states: Off and On. Detection filter transition sets Off to On. Return threshold transition resets On to Off.</body>
+        </ownedComment>
+        <region xmi:id="sm_fail_latch_region" name="FailLatchRegion">
+          <subvertex xmi:type="uml:State" xmi:id="state_fail_off" name="Off"/>
+          <subvertex xmi:type="uml:State" xmi:id="state_fail_on" name="On"/>
+          <transition xmi:id="trans_detect_fail" name="DetectionFilterReached" source="state_fail_off" target="state_fail_on"/>
+          <transition xmi:id="trans_return_fail" name="ReturnThresholdReached" source="state_fail_on" target="state_fail_off"/>
+        </region>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="class_output_decision_table" name="Output_INT_VoltageFail Decision Table">
+        <ownedComment xmi:id="comment_output_decision_table">
+          <body>Priority 1: same channel High and Low both On =&gt; INVALID_CONFIG. Priority 2: any High Fail On =&gt; OVER_VOLTAGE. Priority 3: VBAT Low and IGN1 Low both On =&gt; LOW_VOLTAGE. Priority 4: otherwise =&gt; OFF.</body>
+        </ownedComment>
+      </packagedElement>
     </packagedElement>
-    <packagedElement xmi:type="uml:Operation" xmi:id="fn_8647ee2249b15bca" name="VoltageFail_UpdateFilter">
-      <!--source: C:\Users\User\git\Seat\src\voltage_fail.c-->
-      <ownedParameter xmi:id="fnret_8647ee2249b15bca" name="return" direction="return" type="static void"/>
-      <ownedParameter xmi:id="fnparam_eb92d7b72001fc4b" name="condition" direction="in" type="uint8_t"/>
-      <ownedParameter xmi:id="fnparam_b52ed2644333b155" name="elapsedMs" direction="in" type="uint32_t"/>
-      <ownedParameter xmi:id="fnparam_4409e45d3895c73c" name="filterMs" direction="in" type="uint32_t"/>
-      <ownedParameter xmi:id="fnparam_7bc8d283c553fa66" name="holdTimeMs" direction="in" type="uint32_t * const"/>
-      <ownedParameter xmi:id="fnparam_06bf32d6aad9b14f" name="failFlag" direction="in" type="uint8_t * const"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Operation" xmi:id="fn_46a6bf9b1e3269ab" name="VoltageFail_GetOutput">
-      <!--source: C:\Users\User\git\Seat\src\voltage_fail.c-->
-      <ownedParameter xmi:id="fnret_46a6bf9b1e3269ab" name="return" direction="return" type="static VoltageFail_OutputSignalType"/>
-      <ownedParameter xmi:id="fnparam_9e9ae84d84f02d9e" name="highVbat" direction="in" type="uint8_t"/>
-      <ownedParameter xmi:id="fnparam_838a9d003f013dff" name="highIgn1" direction="in" type="uint8_t"/>
-      <ownedParameter xmi:id="fnparam_c6cbfc456ef97b13" name="lowVbat" direction="in" type="uint8_t"/>
-      <ownedParameter xmi:id="fnparam_844c16a4b4b15445" name="lowIgn1" direction="in" type="uint8_t"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Operation" xmi:id="fn_edee7cf075819341" name="VoltageFail_Init">
-      <!--source: C:\Users\User\git\Seat\src\voltage_fail.c-->
-      <ownedParameter xmi:id="fnret_edee7cf075819341" name="return" direction="return" type="void"/>
-      <ownedParameter xmi:id="fnparam_41bb6fd7ad3606ee" name="state" direction="in" type="VoltageFail_StateType * const"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Operation" xmi:id="fn_c3e17c0c0382f279" name="VoltageFail_Update">
-      <!--source: C:\Users\User\git\Seat\src\voltage_fail.c-->
-      <ownedParameter xmi:id="fnret_c3e17c0c0382f279" name="return" direction="return" type="void"/>
-      <ownedParameter xmi:id="fnparam_197e871a2c25bfd9" name="state" direction="in" type="VoltageFail_StateType * const"/>
-      <ownedParameter xmi:id="fnparam_a8e35c31f573f900" name="params" direction="in" type="const VoltageFail_ParamsType * const"/>
-      <ownedParameter xmi:id="fnparam_1ef398a8b628c097" name="input" direction="in" type="const VoltageFail_InputType * const"/>
-      <ownedParameter xmi:id="fnparam_fc7a349a7b604b61" name="elapsedMs" direction="in" type="uint32_t"/>
-      <ownedParameter xmi:id="fnparam_4e67a2af078e47de" name="output" direction="in" type="VoltageFail_OutputType * const"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="struct_3292b94d44249eca" name="VoltageFail_ParamsType">
-      <!--source: C:\Users\User\git\Seat\inc\voltage_fail.h-->
-      <ownedAttribute xmi:id="attr_f16da9d364dd7b16" name="Par_HighVoltageDetection" type="uint16_t"/>
-      <ownedAttribute xmi:id="attr_86a3cef74117dc67" name="Par_HighVoltageFailFiltering" type="uint32_t"/>
-      <ownedAttribute xmi:id="attr_5a469d3b44fa04a5" name="Par_LowVoltageDetection" type="uint16_t"/>
-      <ownedAttribute xmi:id="attr_cb74653651d34d24" name="Par_LowVoltageFailFiltering" type="uint32_t"/>
-      <ownedAttribute xmi:id="attr_3d5101b8e6f42374" name="Par_HighVoltageReturn" type="uint16_t"/>
-      <ownedAttribute xmi:id="attr_7e0fb7d6cb38fd98" name="Par_LowVoltageReturn" type="uint16_t"/>
-      <ownedAttribute xmi:id="attr_28ef2fde4846c33c" name="Par_ExhibitionLowVoltageReturn" type="uint16_t"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="struct_41f79da197130817" name="VoltageFail_InputType">
-      <!--source: C:\Users\User\git\Seat\inc\voltage_fail.h-->
-      <ownedAttribute xmi:id="attr_77e200a4bdd53cc8" name="Input_H_VBAT" type="uint16_t"/>
-      <ownedAttribute xmi:id="attr_b6306630413f6944" name="Input_H_IGN1" type="uint16_t"/>
-      <ownedAttribute xmi:id="attr_961e9cea313bf542" name="Input_C_FactoryMode" type="uint8_t"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="struct_a14d61e1a8f917d2" name="VoltageFail_OutputType">
-      <!--source: C:\Users\User\git\Seat\inc\voltage_fail.h-->
-      <ownedAttribute xmi:id="attr_8f95f162f256c51c" name="m_VoltageHighFail" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_37d16eea4fc2cfc8" name="m_VoltageHighFail_IGN1" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_25b203bd5bd560c3" name="m_VoltageLowFail" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_cbf71dda928d1928" name="m_VoltageLowFail_IGN1" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_f439e2b0a4d3b0dc" name="Output_INT_VoltageFail" type="VoltageFail_OutputSignalType"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="struct_13cbf541cec6a04b" name="VoltageFail_StateType">
-      <!--source: C:\Users\User\git\Seat\inc\voltage_fail.h-->
-      <ownedAttribute xmi:id="attr_ce8ae7c83ed7ba79" name="m_VoltageHighFail" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_29296f200f433901" name="m_VoltageHighFail_IGN1" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_47ecdef90c7c437e" name="m_VoltageLowFail" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_0aa228f241a6aa15" name="m_VoltageLowFail_IGN1" type="uint8_t"/>
-      <ownedAttribute xmi:id="attr_30ca348fbb521911" name="highVbatFilterTimeMs" type="uint32_t"/>
-      <ownedAttribute xmi:id="attr_ee83f7c2721e2370" name="highIgn1FilterTimeMs" type="uint32_t"/>
-      <ownedAttribute xmi:id="attr_ad38a09357b8f428" name="lowVbatFilterTimeMs" type="uint32_t"/>
-      <ownedAttribute xmi:id="attr_74b56912727aea56" name="lowIgn1FilterTimeMs" type="uint32_t"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Enumeration" xmi:id="enum_033c9e899b30f7be" name="VoltageFail_OutputSignalType">
-      <!--source: C:\Users\User\git\Seat\inc\voltage_fail.h-->
-      <ownedLiteral xmi:id="lit_ce78fbad19284578" name="VOLTAGE_FAIL_OUTPUT_OFF"/>
-      <ownedLiteral xmi:id="lit_dfb5ea2217a439f1" name="VOLTAGE_FAIL_OUTPUT_LOW_VOLTAGE"/>
-      <ownedLiteral xmi:id="lit_823fe9b9142e39f9" name="VOLTAGE_FAIL_OUTPUT_OVER_VOLTAGE"/>
-      <ownedLiteral xmi:id="lit_a705a4e07fe1d718" name="VOLTAGE_FAIL_OUTPUT_INVALID_CONFIG"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2e8ea18e46d13ec8" name="VoltageFail_OutputType_uses_VoltageFail_OutputSignalType" client="struct_a14d61e1a8f917d2" supplier="enum_033c9e899b30f7be"/>
-  </packagedElement>
-</uml:Model>
+  </uml:Model>
+</xmi:XMI>

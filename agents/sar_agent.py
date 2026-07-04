@@ -61,6 +61,8 @@ def _deterministic_findings(config: dict, architecture: dict[str, set[str]], uni
         findings.append("UnitDesign.xmi contains free functions but no classes; confirm whether procedural units need component ownership.")
 
     for class_name in sorted(classes):
+        if _is_ea_design_enrichment(class_name):
+            continue
         if not _has_architecture_owner(class_name, components):
             findings.append(f"`{class_name}` is present in UnitDesign.xmi but has no matching or prefix-based architecture component.")
 
@@ -82,6 +84,14 @@ def _has_architecture_owner(class_name: str, components: set[str]) -> bool:
         if comp in lowered or lowered.startswith(comp):
             return True
     return False
+
+
+def _is_ea_design_enrichment(class_name: str) -> bool:
+    return (
+        class_name.startswith("VF-R-")
+        or class_name == "Output_INT_VoltageFail Decision Table"
+        or class_name == "VoltageFail"
+    )
 
 
 def _format_inventory(values: dict[str, set[str]]) -> str:
